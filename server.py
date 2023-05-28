@@ -4,6 +4,8 @@ import time
 
 HEADERSIZE = 10
 
+lastCoordinates = (0, 0)
+
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 print("Hostname: " + socket.gethostname())
 sock.bind((socket.gethostname(), 1234))
@@ -21,5 +23,10 @@ while True:
     while True:
         time.sleep(0.01)
         message = str(pyautogui.position())
-        message = f"{len(message):<{HEADERSIZE}}" + message
-        clientsocket.send(bytes(message, "utf-8"))
+        xCoord = message[message.index("=") + 1:message.index(",")]
+        yCoord = message[message.index(",") + 4:-1]
+
+        if ((xCoord, yCoord) != lastCoordinates):
+            message = f"{len(message):<{HEADERSIZE}}" + message
+            clientsocket.send(bytes(message, "utf-8"))
+            lastCoordinates = (xCoord, yCoord)
