@@ -1,10 +1,10 @@
 import socket
-import pyautogui
+import mouse
 
 HEADERSIZE = 10
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-sock.connect((socket.gethostname(), 1234))
+sock.connect(("testPC1", 1234))
 
 while True:
     full_message = ""
@@ -29,7 +29,7 @@ while True:
                 yCoord = full_message[full_message.index(",") + 4:full_message.index(")")]
                 time = full_message[full_message.index(")") + 2:]
                 print(f"X: {xCoord}, Y: {yCoord}, Time: {time}")
-                # pyautogui.moveTo(int(xCoord), int(yCoord))
+                mouse.move(int(xCoord), int(yCoord))
             except Exception as e:
                 print(e)
 
